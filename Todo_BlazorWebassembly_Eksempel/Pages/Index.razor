@@ -1,9 +1,93 @@
 ﻿@page "/"
+@using System.Globalization
 
-<PageTitle>Index</PageTitle>
+<PageTitle>@text2</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>@text</h1>
 
-Welcome to your new app.
+@* Dynamic input text*@
+<div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <h2>@text2</h2>
+
+    <input class="form-control" type="text" @bind="text2"></input>
+
+</div>
+
+<hr />
+<br />
+
+@*Button event*@
+<div>
+
+    <h4>Button event</h4>
+
+    <button class="btn btn-primary" @onclick="Button">Click me</button>
+
+</div>
+
+<hr />
+<br />
+
+@*Bind Format*@
+<div>
+    <h4>Custom Format</h4>
+
+    <code>yyyy-MM-dd</code> format:
+
+    <input class="form-control" @bind="time" @bind:format="yyyy-MM-dd" />
+</div>
+
+<hr />
+<br />
+
+@*Custom Binding*@
+<div>
+    <h4>Custom Binding</h4>
+    <p>
+        <label>
+            Decimal value (±0.000 format):
+            <input @bind="DecimalValue" />
+        </label>
+    </p>
+    <p>
+        <code>decimalValue</code>: @decimalValue
+    </p>
+</div>
+
+<hr />
+
+@code{
+
+    string text = "Hello World";
+
+    string text2 = "This can be manipulated";
+
+    DateTime time = DateTime.Now;
+
+    void Button()
+    {
+        text += "!";
+    }
+
+    #region Custom Binding
+
+    private decimal decimalValue = 1.1M;
+    private CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+    private NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+
+    private string DecimalValue
+    {
+
+        get => decimalValue.ToString("0.000", culture);
+        set
+        {
+            if (Decimal.TryParse(value, style, culture, out var number))
+            {
+                decimalValue = Math.Round(number, 3);
+            }
+        }
+    }
+
+    #endregion
+}
