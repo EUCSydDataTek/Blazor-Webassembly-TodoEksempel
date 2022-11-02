@@ -9,6 +9,8 @@
 
         public string Description { get; set; } = string.Empty;
 
+        public bool IsCompleted = false;
+
         public DateTime TimeCreated { get; set; }
 
     }

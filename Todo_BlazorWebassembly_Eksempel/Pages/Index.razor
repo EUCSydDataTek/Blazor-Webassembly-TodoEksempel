@@ -1,93 +1,31 @@
 ﻿@page "/"
 @using System.Globalization
 
-<PageTitle>@text2</PageTitle>
+<PageTitle>Todo</PageTitle>
 
-<h1>@text</h1>
+<h2>Todo</h2>
 
-@* Dynamic input text*@
-<div>
-
-    <h2>@text2</h2>
-
-    <input class="form-control" type="text" @bind="text2"></input>
-
-</div>
-
-<hr />
-<br />
-
-@*Button event*@
-<div>
-
-    <h4>Button event</h4>
-
-    <button class="btn btn-primary" @onclick="Button">Click me</button>
-
-</div>
-
-<hr />
-<br />
-
-@*Bind Format*@
-<div>
-    <h4>Custom Format</h4>
-
-    <code>yyyy-MM-dd</code> format:
-
-    <input class="form-control" @bind="time" @bind:format="yyyy-MM-dd" />
-</div>
-
-<hr />
-<br />
-
-@*Custom Binding*@
-<div>
-    <h4>Custom Binding</h4>
-    <p>
-        <label>
-            Decimal value (±0.000 format):
-            <input @bind="DecimalValue" />
-        </label>
-    </p>
-    <p>
-        <code>decimalValue</code>: @decimalValue
-    </p>
-</div>
-
-<hr />
+<ul class="list-group">
+    @foreach(var item in todoItems)
+    {
+        <li class="list-group-item">
+            <input class="form-check-input" type="checkbox" @bind="item.IsCompleted"> 
+            @item.Title
+        </li>
+    }
+</ul>
 
 @code{
 
-    string text = "Hello World";
+    [Inject] private ITodoService _TodoService { get; set; } = default!;
 
-    string text2 = "This can be manipulated";
+    public List<TodoItem> todoItems = new List<TodoItem>();
 
-    DateTime time = DateTime.Now;
-
-    void Button()
+    protected override async Task OnInitializedAsync()
     {
-        text += "!";
+        todoItems = await _TodoService.GetTodoItemsAsync();
+
+        await base.OnInitializedAsync();
     }
 
-    #region Custom Binding
-
-    private decimal decimalValue = 1.1M;
-    private CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
-    private NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
-
-    private string DecimalValue
-    {
-
-        get => decimalValue.ToString("0.000", culture);
-        set
-        {
-            if (Decimal.TryParse(value, style, culture, out var number))
-            {
-                decimalValue = Math.Round(number, 3);
-            }
-        }
-    }
-
-    #endregion
 }
