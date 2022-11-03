@@ -1,0 +1,34 @@
+﻿@page "/item/{ItemId:int}"
+@inject ITodoService _TodoService
+
+<PageTitle>@TodoItem.Title</PageTitle>
+
+<h1>@TodoItem.Title</h1>
+
+<p>@TodoItem.Description</p>
+
+<p>Oprettet @timeCreated.Days dage siden</p>
+
+<input class="form-check-input" type="checkbox" @bind="TodoItem.IsCompleted">
+
+
+
+
+@code {
+
+    [Parameter] public int ItemId { get; set; }
+
+    private TodoItem TodoItem = new TodoItem();
+
+    private TimeSpan timeCreated = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TodoItem = await _TodoService.GetTodoItemAsync(ItemId);
+
+        timeCreated = DateTime.Now.Subtract(TodoItem.TimeCreated);
+
+        await base.OnInitializedAsync();
+    }
+
+}

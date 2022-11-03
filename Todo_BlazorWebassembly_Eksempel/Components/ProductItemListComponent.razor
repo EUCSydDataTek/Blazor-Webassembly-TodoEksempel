@@ -1,7 +1,9 @@
-﻿<li class="list-group-item">
-    <input class="form-check-input" type="checkbox" @bind="item.IsCompleted" title="@item.Description">
+﻿@inject NavigationManager Navigation
 
+<li class="list-group-item">
+    <input class="form-check-input" type="checkbox" @bind="item.IsCompleted" title="@item.Description">
     @item.Title
+    <button class="btn btn-sm btn-primary" @onclick='() => Navigation.NavigateTo($"/item/{item.Id}")' >Details</button>
 </li>
 
 @code {
