@@ -1,0 +1,9 @@
+﻿<li class="list-group-item">
+    <input class="form-check-input" type="checkbox" @bind="item.IsCompleted" title="@item.Description">
+
+    @item.Title
+</li>
+
+@code {
+    [Parameter] public TodoItem item { get; set; } = new TodoItem();
+}

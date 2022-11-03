@@ -8,12 +8,14 @@
 <ul class="list-group">
     @foreach(var item in todoItems)
     {
-        <li class="list-group-item">
-            <input class="form-check-input" type="checkbox" @bind="item.IsCompleted"> 
-            @item.Title
-        </li>
+        @*ADDED*@
+        <ProductItemListComponent item="item"/>
     }
 </ul>
+
+@*<Counter/>*@
+@*<FetchData/>*@
+<LoadingElement/>
 
 @code{
 
