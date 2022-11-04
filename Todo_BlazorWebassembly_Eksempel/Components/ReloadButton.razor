@@ -1,0 +1,15 @@
+﻿@if(Isbusy)
+{
+    <button class="btn btn-secondary disabled" disabled><i class="fa-solid fa-rotate fa-spin"></i></button>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="OnClick"><i class="fa-solid fa-rotate"></i></button>
+}
+
+
+@code {
+    [Parameter] public bool Isbusy { get; set; } = false;
+
+    [Parameter] public EventCallback OnClick { get; set; }
+}
