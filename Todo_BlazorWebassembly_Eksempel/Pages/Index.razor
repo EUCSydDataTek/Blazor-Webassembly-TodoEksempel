@@ -1,9 +1,13 @@
 ﻿@page "/"
-@using System.Globalization
+@inject ITodoService _TodoService
 
 <PageTitle>Todo</PageTitle>
 
 <h2>Todo</h2>
+
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button @onclick="ReloadButton" type="button" class="btn btn-secondary">Reload</button>
+</div>
 
 <ul class="list-group">
     @foreach(var item in todoItems)
@@ -13,21 +17,39 @@
     }
 </ul>
 
-@*<Counter/>*@
-@*<FetchData/>*@
-@*<LoadingElement/>*@
+<LoadingElement Isbusy="Isbusy" />
 
 @code{
 
-    [Inject] private ITodoService _TodoService { get; set; } = default!;
+    //[Inject] private ITodoService _TodoService { get; set; } = default!;
 
     public List<TodoItem> todoItems = new List<TodoItem>();
 
+    public bool Isbusy = false;
+
     protected override async Task OnInitializedAsync()
     {
+        Isbusy = true;
+
+        await Task.Delay(3000); // Simulates time to get data
         todoItems = await _TodoService.GetTodoItemsAsync();
 
+        Isbusy = false;
+
         await base.OnInitializedAsync();
+    }
+
+    public async void ReloadButton()
+    {
+        todoItems.Clear();
+        Isbusy = true;
+
+        await Task.Delay(3000); // Simulates time to get data
+        todoItems = await _TodoService.GetTodoItemsAsync();
+
+        Isbusy = false;
+
+        StateHasChanged();
     }
 
 }
