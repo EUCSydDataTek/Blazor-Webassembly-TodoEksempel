@@ -1,0 +1,22 @@
+﻿@page "/Item/Create"
+@inject ITodoService _TodoService
+@inject NavigationManager _Navigation
+<div class="card">
+    <div class="card-header">
+        Create new Item
+    </div>
+    <div class="card-body">
+        <ItemFormComponent ValidSubmit="CreateTodo"></ItemFormComponent>
+    </div>
+</div>
+
+@code {
+
+    public async void CreateTodo(TodoItem item)
+    {
+        var newitem = await _TodoService.CreateTodoItemAsync(item);
+
+        _Navigation.NavigateTo($"/item/{newitem.Id}");
+    }
+
+}

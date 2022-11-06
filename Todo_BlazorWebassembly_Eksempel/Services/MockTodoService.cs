@@ -1,10 +1,13 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 using Todo_BlazorWebassembly_Eksempel.Models;
 
 namespace Todo_BlazorWebassembly_Eksempel.Services
 {
     public class MockTodoService : ITodoService
     {
+
+        private static int TodoCounter = 1;
 
         private List<TodoItem> _TodoItems = new List<TodoItem>();
 
@@ -34,6 +37,17 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
                     TimeCreated = DateTime.Now.AddDays(-30)
                 }
             };
+
+            TodoCounter = 4;
+        }
+
+        public Task<TodoItem> CreateTodoItemAsync(TodoItem item)
+        {
+            item.Id = TodoCounter;
+
+            _TodoItems.Add(item);
+
+            return Task.FromResult(item);
         }
 
         public Task<TodoItem> DeleteTodoItemAsync(int id)

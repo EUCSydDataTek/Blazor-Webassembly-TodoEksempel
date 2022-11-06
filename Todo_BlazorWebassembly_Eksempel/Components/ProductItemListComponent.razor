@@ -3,7 +3,8 @@
 <li class="list-group-item">
     <input class="form-check-input" type="checkbox" @bind="item.IsCompleted" title="@item.Description">
     @item.Title
-    <button class="btn btn-sm btn-primary" @onclick='() => Navigation.NavigateTo($"/item/{item.Id}")' >Details</button>
+    <button class="btn btn-sm btn-primary" @onclick='() => Navigation.NavigateTo($"/item/{item.Id}")'><i class="fa-solid fa-circle-info"></i></button>
+    <button class="btn btn-sm btn-primary" @onclick='() => Navigation.NavigateTo($"/item/edit/{item.Id}")'><i class="fa-solid fa-pen-to-square"></i></button>
 </li>
 
 @code {

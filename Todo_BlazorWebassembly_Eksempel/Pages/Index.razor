@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject ITodoService _TodoService
+@inject NavigationManager _Navigation
 
 <PageTitle>Todo</PageTitle>
 
@@ -7,12 +8,12 @@
 
 <div class="btn-group m-2" role="group" aria-label="Basic example">
     <ReloadButton OnClick="ReloadButton" Isbusy="Isbusy" />
+    <button class="btn btn-success" @onclick='() => _Navigation.NavigateTo("/Item/Create")'><i class="fa-solid fa-circle-plus"></i> New item</button>
 </div>
 
 <ul class="list-group">
     @foreach(var item in todoItems)
     {
-        @*ADDED*@
         <ProductItemListComponent item="item"/>
     }
 </ul>
@@ -20,8 +21,6 @@
 <LoadingElement Isbusy="Isbusy" />
 
 @code{
-
-    //[Inject] private ITodoService _TodoService { get; set; } = default!;
 
     public List<TodoItem> todoItems = new List<TodoItem>();
 

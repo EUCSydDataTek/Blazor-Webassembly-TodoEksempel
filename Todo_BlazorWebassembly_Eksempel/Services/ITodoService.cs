@@ -9,6 +9,8 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
 
         public Task<TodoItem> GetTodoItemAsync(int id);
 
+        public Task<TodoItem> CreateTodoItemAsync(TodoItem item);
+
         public Task<TodoItem> EditTodoItemAsync(TodoItem todoItem);
 
         public Task<TodoItem> DeleteTodoItemAsync(int id);
