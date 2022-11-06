@@ -26,6 +26,18 @@ builder.Services.AddSwaggerGen(options =>
 
 });
 
+//Cors
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: "AllowedOrigins",
+//                      policy =>
+//                      {
+//                          policy.WithOrigins("https://localhost:5002")
+//                                .AllowAnyMethod()
+//                                .AllowAnyHeader();
+//                      });
+//});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +51,8 @@ if (app.Environment.IsDevelopment())
 #endregion
 
 app.UseHttpsRedirection();
+
+//app.UseCors("AllowedOrigins"); //Cors
 
 app.UseAuthorization();
 

@@ -50,16 +50,16 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
             return Task.FromResult(item);
         }
 
-        public Task<TodoItem> DeleteTodoItemAsync(int id)
+        public Task<bool> DeleteTodoItemAsync(int id)
         {
             var selected = _TodoItems.Where(t => t.Id == id).FirstOrDefault();
 
             if (selected != null)
             {
                 _TodoItems.Remove(selected);
-                return Task.FromResult(selected);
+                return Task.FromResult(true);
             }
-            throw new KeyNotFoundException("Item does not exist");
+            return Task.FromResult(false);
         }
 
         public Task<TodoItem> EditTodoItemAsync(TodoItem todoItem)
