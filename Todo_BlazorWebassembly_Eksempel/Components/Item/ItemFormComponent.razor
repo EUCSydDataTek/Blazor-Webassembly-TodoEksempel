@@ -3,6 +3,10 @@
 
 <EditForm Model="todoItem" OnValidSubmit="@OnValidSubmitAsync" >
 
+    @*Added*@
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
         <label for="exampleInputEmail1">Title</label>
         <input @bind="todoItem.Title" type="text" class="form-control" id="exampleInputEmail1" placeholder="title" required>
