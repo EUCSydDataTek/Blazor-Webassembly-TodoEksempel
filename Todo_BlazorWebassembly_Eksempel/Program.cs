@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Todo_BlazorWebassembly_Eksempel;
@@ -8,6 +9,8 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<ITodoService,TodoApiService>();
+
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddHttpClient<ITodoService, TodoApiService>(config => config.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
