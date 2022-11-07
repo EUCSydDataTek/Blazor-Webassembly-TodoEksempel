@@ -42,13 +42,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-#region Swagger Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseWebAssemblyDebugging(); //Slå debugging af Webassembly til i Development
 }
-#endregion
 
 app.UseHttpsRedirection();
 
@@ -56,6 +55,12 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseBlazorFrameworkFiles(); // Sørger for at blazor webassembly appen kan loade de frameworks (DLL) den skal bruge for at køre i browseren 
+
+app.UseStaticFiles(); //loader statiske filer fx billeder fra serveren
+
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");  // setter endpoint til index.html
 
 app.Run();

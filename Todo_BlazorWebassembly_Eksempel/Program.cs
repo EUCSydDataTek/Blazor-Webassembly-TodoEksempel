@@ -9,6 +9,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped<ITodoService,TodoApiService>();
 
-builder.Services.AddHttpClient<ITodoService, TodoApiService>(config => config.BaseAddress = AppConfig.Todo_BaseAddress);
+builder.Services.AddHttpClient<ITodoService, TodoApiService>(config => config.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
 await builder.Build().RunAsync();
