@@ -8,7 +8,7 @@
 
 <div class="btn-group m-2" role="group" aria-label="Basic example">
     <ReloadButton OnClick="ReloadButton" Isbusy="Isbusy" />
-    <button class="btn btn-success" @onclick='() => _Navigation.NavigateTo("/Item/Create")'><i class="fa-solid fa-circle-plus"></i> New item</button>
+    <button class="btn btn-success" @onclick='CreateButton'><i class="fa-solid fa-circle-plus"></i> New item</button>
 </div>
 
 <ul class="list-group">
@@ -22,6 +22,8 @@
 
 @code{
 
+    [CascadingParameter] public IModalService Modal { get; set; } = default!;
+
     public List<TodoItem> todoItems = new List<TodoItem>();
 
     public bool Isbusy = false;
@@ -30,7 +32,6 @@
     {
         Isbusy = true;
 
-        await Task.Delay(3000); // Simulates time to get data
         todoItems = await _TodoService.GetTodoItemsAsync();
 
         Isbusy = false;
@@ -43,7 +44,6 @@
         todoItems.Clear();
         Isbusy = true;
 
-        await Task.Delay(3000); // Simulates time to get data
         todoItems = await _TodoService.GetTodoItemsAsync();
 
         Isbusy = false;
@@ -51,4 +51,17 @@
         StateHasChanged();
     }
 
+    public async void CreateButton()
+    {
+        var modal = Modal.Show<Todo_BlazorWebassembly_Eksempel.Pages.TodoItems.Create>();
+
+        await modal.Result;
+
+        Isbusy = true;
+
+        todoItems = await _TodoService.GetTodoItemsAsync();
+
+        Isbusy = false;
+        StateHasChanged();
+    }
 }
