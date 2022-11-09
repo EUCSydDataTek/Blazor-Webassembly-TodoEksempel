@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
+@inject IToastService toastService
 
 <PageTitle>Todo</PageTitle>
 
@@ -49,7 +50,7 @@
         todoItems = await _TodoService.GetTodoItemsAsync();
 
         Isbusy = false;
-
+        toastService.ShowSuccess("List refreshed");
         StateHasChanged();
     }
 

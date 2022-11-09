@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<ITodoService, TodoService>();
 
@@ -58,6 +59,8 @@ app.UseAuthorization();
 app.UseBlazorFrameworkFiles(); // Sørger for at blazor webassembly appen kan loade de frameworks (DLL) den skal bruge for at køre i browseren 
 
 app.UseStaticFiles(); //loader statiske filer fx billeder fra serveren
+
+app.MapRazorPages();
 
 app.MapControllers();
 

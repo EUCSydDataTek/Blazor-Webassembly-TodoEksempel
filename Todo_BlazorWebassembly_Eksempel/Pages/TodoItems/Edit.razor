@@ -1,6 +1,7 @@
 ﻿@page "/item/edit/{ItemId:int}"
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
+@inject IToastService toastService
 
 <ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>
 
@@ -12,9 +13,19 @@
 
     public async void EditTodo(TodoItem item)
     {
-        var newitem = await _TodoService.EditTodoItemAsync(item);
+        try
+        {
+            var newitem = await _TodoService.EditTodoItemAsync(item);
+            toastService.ShowSuccess(newitem.Title, "Item updated");
+            await BlazoredModal.CloseAsync();
+        }
+        catch (Exception e)
+        {
+            toastService.ShowWarning(e.Message);
+        }
+        
 
-        await BlazoredModal.CloseAsync();
+
     }
 
 }

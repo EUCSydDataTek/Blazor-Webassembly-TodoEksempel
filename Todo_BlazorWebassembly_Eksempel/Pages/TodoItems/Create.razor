@@ -1,6 +1,7 @@
 ﻿@page "/Item/Create"
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
+@inject IToastService toastService
 
 <ItemFormComponent ValidSubmit="CreateTodo"></ItemFormComponent>
 
@@ -16,9 +17,16 @@
 
     public async void CreateTodo(TodoItem item)
     {
-        var newitem = await _TodoService.CreateTodoItemAsync(item);
-
-        await BlazoredModal.CloseAsync();
+        try
+        {
+            var newitem = await _TodoService.CreateTodoItemAsync(item);
+            toastService.ShowSuccess($"{newitem.Title}", "Item Created");
+            await BlazoredModal.CloseAsync();
+        }
+        catch (Exception e)
+        {
+            toastService.ShowWarning(e.Message);
+        }
         //_Navigation.NavigateTo($"/item/{newitem.Id}");
     }
 
