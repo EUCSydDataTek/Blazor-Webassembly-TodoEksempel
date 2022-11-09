@@ -1,4 +1,12 @@
 ﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration;
+
+<BlazoredToasts IconType="IconType.FontAwesome"
+                Position="ToastPosition.TopRight"
+                SuccessIcon="fa-solid fa-circle-check"
+                ErrorIcon="fa-solid fa-bomb"
+                WarningIcon="fa-solid triangle-exclamation"
+                InfoIcon="fa-solid fa-circle-info" />
 
 <div class="page">
     <div class="sidebar">
