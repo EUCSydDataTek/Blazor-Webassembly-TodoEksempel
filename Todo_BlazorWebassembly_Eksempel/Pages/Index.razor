@@ -6,17 +6,19 @@
 
 <h2>Todo</h2>
 
-<div class="btn-group m-2" role="group" aria-label="Basic example">
-    <ReloadButton OnClick="ReloadButton" Isbusy="Isbusy" />
-    <button class="btn btn-success" @onclick='CreateButton'><i class="fa-solid fa-circle-plus"></i> New item</button>
-</div>
+<CascadingValue Value="new CascadingReloadCallback(async () => await Reload())">
+    <div class="btn-group m-2" role="group" aria-label="Basic example">
+        <ReloadButton Isbusy="Isbusy" />
+        <button class="btn btn-success" @onclick='CreateButton'><i class="fa-solid fa-circle-plus"></i> New item</button>
+    </div>
 
-<ul class="list-group">
-    @foreach(var item in todoItems)
-    {
-        <ProductItemListComponent item="item"/>
-    }
-</ul>
+    <ul class="list-group">
+             @foreach(var item in todoItems)
+             {
+                <ProductItemListComponent item="item"/>
+             }
+    </ul>
+</CascadingValue>
 
 <LoadingElement Isbusy="Isbusy" />
 
@@ -39,7 +41,7 @@
         await base.OnInitializedAsync();
     }
 
-    public async void ReloadButton()
+    public async Task Reload()
     {
         todoItems.Clear();
         Isbusy = true;
@@ -51,17 +53,12 @@
         StateHasChanged();
     }
 
-    public async void CreateButton()
+    public async Task CreateButton()
     {
         var modal = Modal.Show<Todo_BlazorWebassembly_Eksempel.Pages.TodoItems.Create>();
 
         await modal.Result;
 
-        Isbusy = true;
-
-        todoItems = await _TodoService.GetTodoItemsAsync();
-
-        Isbusy = false;
-        StateHasChanged();
+        await Reload();
     }
 }

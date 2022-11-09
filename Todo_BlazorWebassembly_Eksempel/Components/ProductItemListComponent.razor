@@ -4,9 +4,26 @@
     <input class="form-check-input" type="checkbox" @bind="item.IsCompleted" title="@item.Description">
     @item.Title
     <button class="btn btn-sm btn-primary" @onclick='() => Navigation.NavigateTo($"/item/{item.Id}")'><i class="fa-solid fa-circle-info"></i></button>
-    <button class="btn btn-sm btn-primary" @onclick='() => Navigation.NavigateTo($"/item/edit/{item.Id}")'><i class="fa-solid fa-pen-to-square"></i></button>
+    <button class="btn btn-sm btn-primary" @onclick='() => EditButton(item.Id)'><i class="fa-solid fa-pen-to-square"></i></button>
 </li>
 
 @code {
     [Parameter] public TodoItem item { get; set; } = new TodoItem();
+
+    [CascadingParameter] public CascadingReloadCallback Reload { get; set; }
+
+    [CascadingParameter] public IModalService Modal { get; set; } = default!;
+
+    public async Task EditButton(int ItemId)
+    {
+        ModalParameters parameters = new ModalParameters();
+
+        parameters.Add(nameof(Todo_BlazorWebassembly_Eksempel.Pages.TodoItems.Edit.ItemId), ItemId);
+
+        var modal = Modal.Show<Todo_BlazorWebassembly_Eksempel.Pages.TodoItems.Edit>("Edit Item", parameters);
+
+        await modal.Result;
+
+        await Reload.InvokeAsync();
+    }
 }

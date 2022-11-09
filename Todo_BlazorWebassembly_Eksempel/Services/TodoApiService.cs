@@ -35,7 +35,7 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
         {
             TodoItemObject todoItemObject = todoItem.ToTodoItemObject();
 
-            var response = await _HttpClient.PutAsJsonAsync<TodoItemObject>("/api/todo/create", todoItemObject);
+            var response = await _HttpClient.PutAsJsonAsync<TodoItemObject>("/api/todo/update", todoItemObject);
 
             if (response.IsSuccessStatusCode)
             {

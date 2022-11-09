@@ -4,7 +4,7 @@
 }
 else
 {
-    <button class="btn btn-primary" @onclick="OnClick"><i class="fa-solid fa-rotate"></i> @Text</button>
+    <button class="btn btn-primary" @onclick="() => Reload.InvokeAsync()"><i class="fa-solid fa-rotate"></i> @Text</button>
 }
 
 
@@ -13,5 +13,5 @@ else
 
     [Parameter] public string? Text { get; set; } = "";
 
-    [Parameter] public EventCallback OnClick { get; set; }
+    [CascadingParameter] public CascadingReloadCallback Reload { get; set; }
 }

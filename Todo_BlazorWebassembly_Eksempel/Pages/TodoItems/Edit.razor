@@ -2,23 +2,19 @@
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
 
-<div class="card">
-    <div class="card-header">
-        Edit Item
-    </div>
-    <div class="card-body">
-        <ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>
-    </div>
-</div>
+<ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>
 
 @code {
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
     [Parameter] public int ItemId { get; set; }
 
     public async void EditTodo(TodoItem item)
     {
         var newitem = await _TodoService.EditTodoItemAsync(item);
 
-        _Navigation.NavigateTo($"/item/{newitem.Id}");
+        await BlazoredModal.CloseAsync();
     }
 
 }
