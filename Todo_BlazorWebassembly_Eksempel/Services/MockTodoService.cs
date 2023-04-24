@@ -30,7 +30,7 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
                 {
                     Id = 3,
                     Title = "Lav et projekt",
-                    Description = "lav et vilds kompliceret projekt uden dokumentation så du ikke ved havd du har lavet",
+                    Description = "lav et vilds kompliceret projekt uden dokumentation så du ikke ved hvad du har lavet",
                     TimeCreated = DateTime.Now.AddDays(-30)
                 }
             };
