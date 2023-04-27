@@ -1,4 +1,5 @@
 ﻿@page "/item/edit/{ItemId:int}"
+@using Microsoft.AspNetCore.JsonPatch
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
 
@@ -7,18 +8,18 @@
         Edit Item
     </div>
     <div class="card-body">
-        <ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>
+        @*<ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>*@
+        <EditTodoComponent ValidSubmit="EditTodo" ItemId="ItemId"></EditTodoComponent>
     </div>
 </div>
 
 @code {
     [Parameter] public int ItemId { get; set; }
 
-    public async void EditTodo(TodoItem item)
+    public async void EditTodo(JsonPatchDocument<TodoItemObject> item)
     {
-        var newitem = await _TodoService.EditTodoItemAsync(item);
+        var newitem = await _TodoService.PartiallyEditTodoItemAsync(ItemId,item);
 
         _Navigation.NavigateTo($"/item/{newitem.Id}");
     }
-
 }

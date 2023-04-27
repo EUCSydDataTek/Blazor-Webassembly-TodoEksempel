@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WebApiEksempel.Services;
 using WebApiEksempel.Services.Dto;
@@ -68,13 +69,13 @@ namespace WebApiEksempel.Controllers
         /// <returns>A result of the action</returns>
         [HttpDelete]
         [Route("delete")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult DeleteItem(int id)
         {
           if(_TodoService.DeleteTodo(id))
           {
-                return Ok("Item deleted");
+                return NoContent();
           }
           else
           {
@@ -105,6 +106,26 @@ namespace WebApiEksempel.Controllers
             }
         }
 
+        /// <summary>
+        /// Partially updates a todo Item
+        /// </summary>
+        /// <param name="Id">The id of the Todo</param>
+        /// <param name="patch">The Patch document</param>
+        /// <returns>The edited product</returns>
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(TodoItem))]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Route("update/{Id}")]
+        public IActionResult UpdateItem(int Id,JsonPatchDocument<TodoItem> patch)
+        {
+            var result = _TodoService.PartialUpdateTodo(Id, patch);
 
+            if (result == null)
+            {
+                return UnprocessableEntity("Todo not found");
+            }
+
+            return Ok(result);
+        }
     }
 }

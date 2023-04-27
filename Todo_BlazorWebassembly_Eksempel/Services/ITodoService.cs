@@ -1,4 +1,5 @@
-﻿using Todo_BlazorWebassembly_Eksempel.Models;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Todo_BlazorWebassembly_Eksempel.Models;
 
 namespace Todo_BlazorWebassembly_Eksempel.Services
 {
@@ -14,6 +15,8 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
         public Task<TodoItem> EditTodoItemAsync(TodoItem todoItem);
 
         public Task<bool> DeleteTodoItemAsync(int id);
+
+        public Task<TodoItem?> PartiallyEditTodoItemAsync(int TodoId, JsonPatchDocument<TodoItemObject> jsonPatch);
 
     }
 }
