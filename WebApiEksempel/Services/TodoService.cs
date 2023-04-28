@@ -1,4 +1,5 @@
-﻿using WebApiEksempel.Services.Dto;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using WebApiEksempel.Services.Dto;
 
 namespace WebApiEksempel.Services
 {
@@ -37,6 +38,20 @@ namespace WebApiEksempel.Services
         public List<TodoItem> GetTodoItems()
         {
             return todoItems.ToList();
+        }
+
+        public TodoItem? PartialUpdateTodo(int todoId,JsonPatchDocument<TodoItem> Patches)
+        {
+            TodoItem? selectedItem = todoItems.Where(t => t.Id == todoId).FirstOrDefault();
+
+            if (selectedItem == null)
+            {
+                return null;
+            }
+
+            Patches.ApplyTo(selectedItem);
+
+            return selectedItem;
         }
 
         public TodoItem? UpdateTodo(TodoItem item)
