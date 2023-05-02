@@ -3,15 +3,7 @@
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
 
-<div class="card">
-    <div class="card-header">
-        Edit Item
-    </div>
-    <div class="card-body">
-        @*<ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>*@
-        <EditTodoComponent ValidSubmit="EditTodo" ItemId="ItemId"></EditTodoComponent>
-    </div>
-</div>
+<EditTodoComponent ValidSubmit="EditTodo" ItemId="ItemId"></EditTodoComponent>
 
 @code {
 
