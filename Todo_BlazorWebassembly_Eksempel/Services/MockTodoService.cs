@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using Todo_BlazorWebassembly_Eksempel.Models;
 
@@ -78,5 +79,10 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
         public Task<TodoItem> GetTodoItemAsync(int id) => Task.FromResult(_TodoItems.Where(t => t.Id == id).FirstOrDefault() ?? throw new KeyNotFoundException("Item does not exist"));
 
         public Task<List<TodoItem>> GetTodoItemsAsync() => Task.FromResult(_TodoItems.ToList());
+
+        public Task<TodoItem?> PartiallyEditTodoItemAsync(int TodoId, JsonPatchDocument<TodoItemObject> jsonPatch)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

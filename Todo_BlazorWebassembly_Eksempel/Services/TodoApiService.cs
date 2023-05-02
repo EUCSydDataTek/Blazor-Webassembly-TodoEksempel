@@ -1,4 +1,7 @@
-﻿using System.Net.Http.Json;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
+using System.Text;
 using Todo_BlazorWebassembly_Eksempel.Models;
 
 namespace Todo_BlazorWebassembly_Eksempel.Services
@@ -43,6 +46,21 @@ namespace Todo_BlazorWebassembly_Eksempel.Services
                 return todoItemObject.ToTodoItem();
             }
             throw new KeyNotFoundException("Item does not exist");
+        }
+
+        public async Task<TodoItem?> PartiallyEditTodoItemAsync(int TodoId,JsonPatchDocument<TodoItemObject> jsonPatch)
+        {
+            string PatchCommands = JsonConvert.SerializeObject(jsonPatch);
+
+            var requestContent = new StringContent(PatchCommands, Encoding.UTF8, "application/json-patch+json");
+
+            var response = await _HttpClient.PatchAsync($"/api/todo/update/{TodoId}",requestContent);
+
+            response.EnsureSuccessStatusCode();
+
+            var Item = await response.Content.ReadFromJsonAsync<TodoItemObject>();
+
+            return Item?.ToTodoItem() ?? null;
         }
 
         public async Task<TodoItem> GetTodoItemAsync(int id)

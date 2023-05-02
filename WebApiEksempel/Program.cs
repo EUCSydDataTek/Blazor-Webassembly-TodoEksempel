@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<ITodoService, TodoService>();
@@ -28,16 +28,16 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 //Cors
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy(name: "AllowedOrigins",
-//                      policy =>
-//                      {
-//                          policy.WithOrigins("https://localhost:5002")
-//                                .AllowAnyMethod()
-//                                .AllowAnyHeader();
-//                      });
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowedOrigins",
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:5002")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                      });
+});
 
 var app = builder.Build();
 
@@ -52,7 +52,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseCors("AllowedOrigins"); //Cors
+app.UseCors("AllowedOrigins"); //Cors
 
 app.UseAuthorization();
 

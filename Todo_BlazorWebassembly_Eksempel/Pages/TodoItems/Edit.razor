@@ -1,9 +1,10 @@
 ﻿@page "/item/edit/{ItemId:int}"
+@using Microsoft.AspNetCore.JsonPatch
 @inject ITodoService _TodoService
 @inject NavigationManager _Navigation
 @inject IToastService toastService
 
-<ItemFormComponent ValidSubmit="EditTodo" ItemId="ItemId"></ItemFormComponent>
+<EditTodoComponent ValidSubmit="EditTodo" ItemId="ItemId"></EditTodoComponent>
 
 @code {
 
@@ -11,11 +12,12 @@
 
     [Parameter] public int ItemId { get; set; }
 
-    public async void EditTodo(TodoItem item)
+    public async void EditTodo(JsonPatchDocument<TodoItemObject> item)
     {
+        
         try
         {
-            var newitem = await _TodoService.EditTodoItemAsync(item);
+            var newitem = await _TodoService.PartiallyEditTodoItemAsync(ItemId,item);
             toastService.ShowSuccess(newitem.Title, "Item updated");
             await BlazoredModal.CloseAsync();
         }
@@ -27,5 +29,4 @@
 
 
     }
-
 }

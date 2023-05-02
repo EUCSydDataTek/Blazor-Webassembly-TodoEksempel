@@ -1,4 +1,5 @@
-﻿using WebApiEksempel.Services.Dto;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using WebApiEksempel.Services.Dto;
 
 namespace WebApiEksempel.Services
 {
@@ -11,7 +12,9 @@ namespace WebApiEksempel.Services
 
         public TodoItem UpdateTodo(TodoItem item);
 
-        public bool DeleteTodo(int Id);  
+        public bool DeleteTodo(int Id);
+
+        public TodoItem? PartialUpdateTodo(int todoId, JsonPatchDocument<TodoItem> Patches);
 
         public TodoItem? GetTodo(int id);
     }

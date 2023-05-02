@@ -1,0 +1,85 @@
+﻿@namespace Todo_BlazorWebassembly_Eksempel.Components
+@using Microsoft.AspNetCore.JsonPatch
+@inject ITodoService _TodoService
+
+@{
+    string SetDisabled(bool state)
+    {
+        if (state)
+        {
+            return "readonly";
+        }
+        return string.Empty;
+    }
+}
+
+<EditForm Model="todoItem" OnValidSubmit="@OnValidSubmitAsync">
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Title <InputCheckbox @bind-Value="@EditTitle" class="form-check-input" id="CompletedCheck"/></label>
+        <InputText @bind-Value="@todoItem.Title" class="form-control" id="exampleInputEmail1" placeholder="title" disabled="@(!EditTitle)" />
+    </div>
+
+    <div class="form-group">
+        <label for="title">Description <InputCheckbox @bind-Value="@EditDescription" class="form-check-input" id="CompletedCheck"/></label>
+        <InputTextArea class="form-check w-100" id="title" @bind-Value="@todoItem.Description" placeholder="description" disabled="@(!EditDescription)" />
+    </div>
+
+    @if (ItemId == 0)
+    {
+        <button type="submit" class="btn btn-primary">Create</button>
+    }
+    else
+    {
+        <div class="form-check">
+            <input @bind="todoItem.IsCompleted" type="checkbox" class="form-check-input" id="CompletedCheck" >
+            <label class="form-check-label" for="exampleCheck1">completed</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+
+</EditForm>
+
+@code {
+
+    private TodoItem todoItem { get; set; } = new TodoItem();
+
+    [Parameter] public int ItemId { get; set; } = 0;
+
+    [Parameter] public EventCallback<JsonPatchDocument<TodoItemObject>> ValidSubmit { get; set; }
+
+    public bool EditDescription = false;
+    public bool EditTitle = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ItemId != 0)
+        {
+            todoItem = await _TodoService.GetTodoItemAsync(ItemId);
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task OnValidSubmitAsync()
+    {
+        JsonPatchDocument<TodoItemObject> Patch = new JsonPatchDocument<TodoItemObject>();
+
+        if (EditTitle)
+        {
+            Patch.Replace(t => t.title, todoItem.Title);
+        }
+
+        if (EditDescription)
+        {
+            Patch.Replace(t => t.description, todoItem.Description);
+        }
+        
+        Patch.Replace(t => t.completed, todoItem.IsCompleted);
+
+        await ValidSubmit.InvokeAsync(Patch);
+    }
+
+    
+}
