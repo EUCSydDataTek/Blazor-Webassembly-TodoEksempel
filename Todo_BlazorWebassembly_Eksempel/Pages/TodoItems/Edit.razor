@@ -18,7 +18,7 @@
         try
         {
             var newitem = await _TodoService.PartiallyEditTodoItemAsync(ItemId,item);
-            toastService.ShowSuccess(newitem.Title, "Item updated");
+            toastService.ShowSuccess("Item updated");
             await BlazoredModal.CloseAsync();
         }
         catch (Exception e)

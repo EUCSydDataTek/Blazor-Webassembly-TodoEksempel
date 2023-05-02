@@ -20,7 +20,7 @@
         try
         {
             var newitem = await _TodoService.CreateTodoItemAsync(item);
-            toastService.ShowSuccess($"{newitem.Title}", "Item Created");
+            toastService.ShowSuccess("Item Created");
             await BlazoredModal.CloseAsync();
         }
         catch (Exception e)
